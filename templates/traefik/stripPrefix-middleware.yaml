@@ -1,0 +1,10 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+   name: {{ include "application-chart-template.fullname" . }}-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+    {{- range .Values.traefik}}
+      - {{ .path }}
+    {{- end }}

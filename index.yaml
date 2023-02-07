@@ -3,22 +3,12 @@ entries:
   application-chart-template:
   - apiVersion: v2
     appVersion: 1.16.0
-<<<<<<< HEAD:index.yaml
-    created: "2023-02-07T16:12:22.74798+08:00"
-=======
-    created: "2023-02-07T16:05:32.902967+08:00"
->>>>>>> main:charts/index.yaml
+    created: "2023-02-07T16:32:30.866686+08:00"
     description: A Helm chart for Kubernetes
     digest: 47f892a7a05b94efc030e08f0a9b650eee0e743f5a1b76750f88d572a1f55293
     name: application-chart-template
     type: application
     urls:
-<<<<<<< HEAD:index.yaml
     - https://YkeLit.github.com/application-chart-template/charts/charts/application-chart-template-1.0.0.tgz
     version: 1.0.0
-generated: "2023-02-07T16:12:22.745935+08:00"
-=======
-    - https://YkeLit.github.com/application-chart-template/charts/application-chart-template-1.0.0.tgz
-    version: 1.0.0
-generated: "2023-02-07T16:05:32.900178+08:00"
->>>>>>> main:charts/index.yaml
+generated: "2023-02-07T16:32:30.864728+08:00"

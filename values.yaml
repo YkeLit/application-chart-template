@@ -1,0 +1,102 @@
+# Default values for application-chart-template.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+########################Pod Setting########################
+
+# 使用前请修改 fullnameOverride 和 nameOverride，方便分辨与查找此应用
+nameOverride: chart-template
+fullnameOverride: application-chart-template
+
+# 设置 chart 的 namespace
+namespace: default
+
+# 设置此 Pod 的副本数
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imageCredentials:
+  registry: registry.cn-hangzhou.aliyuncs.com
+  username: deploy-man@skylark
+  password: changeit
+  email: dev@byzan.team
+
+service:
+  - name: http
+    type: ClusterIP
+    port: 80
+
+# 使用 Pods 资源限制请配置 resourcees。
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# 若使用 hpa 自动扩缩容请确保已设置 resources 并且下方 enable 设置为 true。
+# 调整下方参数
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# 自动重启策略
+restartPolicy: Always
+
+nodeSelector: {}
+
+# 设置外部服务引入
+externalEndPoint: {}
+  # - name: ""
+  #   ip: ""
+  #   port: ""
+
+externalService: {}
+  # - name: ""
+  #   port: ""
+  #   targetPort: ""
+
+########################Application Setting########################
+
+# Application 代理设置
+applicationHost: 
+  - factory.jet.localhost
+applicationTLSSecret:
+
+# traefik 代理匹配规则
+traefik:
+  - name: web
+    path: /
+    
+
+# 需要使用 initcontainers 请配置此项
+initContainers: {}
+  # - name: init
+  #   image: busybox:latest
+  #   command: ["sh", "-c"]
+  #   args: []
+  #   envFrom:
+  #      - configMapRef:
+  #          name: {{ .Chart.Name }}
+
+# 设置此应用持久化存储
+volumeMounts: {}
+  # - mountPath: /path/file
+  #   name: volumeName
+
+volumes: {}
+  # - name: volumeName
+  #   hostPath: 
+  #     path: /local/path
+  #     type: DirectoryOrCreate
+
+# application environment variablea, 根据实际设置
+env: {}

@@ -78,7 +78,7 @@ traefik:
     
 
 # 需要使用 initcontainers 请配置此项
-initContainers: {}
+initContainers: []
   # - name: init
   #   image: busybox:latest
   #   command: ["sh", "-c"]

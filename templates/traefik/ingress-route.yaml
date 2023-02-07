@@ -1,7 +1,7 @@
 {{/* Middlewares for web ingress-routes */}}
 {{- $webMiddlewares := list }}
 {{- $webMiddlewares = append $webMiddlewares "compress" }}
-{{- $webMiddlewares = append $webMiddlewares "stripPrefix" }}
+{{- $webMiddlewares = append $webMiddlewares "stripprefix" }}
 {{- if .Values.jetTLSSecret | empty | not }}
 {{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
 {{- end }}

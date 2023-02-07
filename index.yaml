@@ -1,14 +1,3 @@
 apiVersion: v1
-entries:
-  application-chart-template:
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2023-02-07T16:32:30.866686+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 47f892a7a05b94efc030e08f0a9b650eee0e743f5a1b76750f88d572a1f55293
-    name: application-chart-template
-    type: application
-    urls:
-    - https://YkeLit.github.com/application-chart-template/charts/charts/application-chart-template-1.0.0.tgz
-    version: 1.0.0
-generated: "2023-02-07T16:32:30.864728+08:00"
+entries: {}
+generated: "2023-02-07T17:04:06.927525+08:00"

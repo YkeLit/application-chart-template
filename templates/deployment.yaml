@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application-chart-template.fullname" . }}
+  labels:
+    {{- include "application-chart-template.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "application-chart-template.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "application-chart-template.selectorLabels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: {{ include "application-chart-template.fullname" . }}-docker-registry-secret
+      {{- if .Values.initContainers | empty | not }}
+      initContainers:
+        {{- .Values.initContainers | toYaml | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}-env
+          image: {{ include "application-chart-template.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range .Values.service }}
+            - name: {{ .name }}
+              containerPort: {{ .port }}
+              protocol: TCP
+            {{- end }}
+          resources:
+            {{- .Values.resources | toYaml | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- . | toYaml | nindent 8 }}
+      {{- end }}
+          volumeMounts:
+            {{- .Values.volumeMounts | toYaml | nindent 12}}
+      restartPolicy: {{ .Values.restartPolicy }}
+      volumes:
+        {{- .Values.volumes | toYaml | nindent 8}}

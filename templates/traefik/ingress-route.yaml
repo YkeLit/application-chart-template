@@ -1,0 +1,59 @@
+{{/* Middlewares for web ingress-routes */}}
+{{- $webMiddlewares := list }}
+{{- $webMiddlewares = append $webMiddlewares "compress" }}
+{{- $webMiddlewares = append $webMiddlewares "stripPrefix" }}
+{{- if .Values.jetTLSSecret | empty | not }}
+{{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
+{{- end }}
+
+{{/* Middlewares for websecure ingress-routes */}}
+{{- $websecureMiddlewares := list }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "compress" }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "stripprefix" }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "server-headers" }}
+
+{{- range .Values.traefik }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "application-chart-template.fullname" $ }}-{{ .name }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: {{ range $.Values.applicationHost }} HOST(`{{ . }}`) {{- end }} && PathPrefix(`{{ .path }}`)
+      kind: Rule
+      services:
+        - name: {{ include "application-chart-template.fullname" $ }}
+          port: {{ include "application-chart-template.fullname" $ }}
+          passHostHeader: true
+      middlewares:
+        {{- range $webMiddlewares }}
+        - name: {{ include "application-chart-template.fullname" $ }}-{{ . }}
+        {{- end}}
+{{- end }}
+---
+{{- if .Values.jetTLSSecret | empty | not }}
+{{- range .Values.traefik }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "application-chart-template.fullname" $ }}-{{ .name }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{ range $.Values.applicationHost }} HOST(`{{ . }}`) {{- end }} && PathPrefix(`{{ .path }}`)
+      kind: Rule
+      services:
+        - name: {{ include "application-chart-template.fullname" $ }}
+          passHostHeader: true
+          port: {{ include "application-chart-template.fullname" $ }}
+      middlewares:
+        {{- range $websecureMiddlewares }}
+        - name: {{ include "application-chart-template.fullname" $ }}-{{ . }}
+        {{- end}}
+  tls:
+    secretName: {{ include "application-chart-template.fullname" $ }}-tls-secret
+{{- end }}
+{{- end }}

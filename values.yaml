@@ -88,11 +88,11 @@ initContainers: []
   #          name: {{ .Chart.Name }}
 
 # 设置此应用持久化存储
-volumeMounts: {}
+volumeMounts: []
   # - mountPath: /path/file
   #   name: volumeName
 
-volumes: {}
+volumes: []
   # - name: volumeName
   #   hostPath: 
   #     path: /local/path

@@ -2,7 +2,7 @@
 {{- $webMiddlewares := list }}
 {{- $webMiddlewares = append $webMiddlewares "compress" }}
 {{- $webMiddlewares = append $webMiddlewares "stripprefix" }}
-{{- if .Values.jetTLSSecret | empty | not }}
+{{- if .Values.applicationTLSSecret | empty | not }}
 {{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
 {{- end }}
 
@@ -12,43 +12,45 @@
 {{- $websecureMiddlewares = append $websecureMiddlewares "stripprefix" }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "server-headers" }}
 
-{{- range .Values.traefik }}
+{{- $hosts := .Values.applicationHost }}
+{{- $lastIndex := sub (len $hosts) 1 }}
+
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "application-chart-template.fullname" $ }}-{{ .name }}
+  name: {{ include "application-chart-template.fullname" $ }}-web
 spec:
   entryPoints:
     - web
   routes:
-    - match: {{ range $.Values.applicationHost }} HOST(`{{ . }}`) {{- end }} && PathPrefix(`{{ .path }}`)
+  {{- range .Values.appIngressroute }}
+    # - match: ({{ range $.Values.applicationHost }} HOST(`{{ . }}`) {{- end }}) && PathPrefix(`/{{ .path }}`)
+    - match: ({{- range $index, $host := $hosts -}}{{ if $host }} HOST(`{{ $host }}`){{ end }}{{ if ne $index $lastIndex }} ||{{ end }}{{- end -}}) && PathPrefix(`{{ .path }}`)
       kind: Rule
       services:
         - name: {{ include "application-chart-template.fullname" $ }}
-          port: {{ include "application-chart-template.fullname" $ }}
-          passHostHeader: true
+          port: {{ $.Values.service.port }}
       middlewares:
         {{- range $webMiddlewares }}
         - name: {{ include "application-chart-template.fullname" $ }}-{{ . }}
         {{- end}}
 {{- end }}
 ---
-{{- if .Values.jetTLSSecret | empty | not }}
-{{- range .Values.traefik }}
+{{- if .Values.applicationTLSSecret | empty | not }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ include "application-chart-template.fullname" $ }}-{{ .name }}
+  name: {{ include "application-chart-template.fullname" $ }}-websecure
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ range $.Values.applicationHost }} HOST(`{{ . }}`) {{- end }} && PathPrefix(`{{ .path }}`)
+  {{- range .Values.appIngressroute }}
+    - match: ({{- range $index, $host := $hosts -}}{{ if $host }} HOST(`{{ $host }}`){{ end }}{{ if ne $index $lastIndex }} ||{{ end }}{{- end -}}) && PathPrefix(`{{ .path }}`)
       kind: Rule
       services:
         - name: {{ include "application-chart-template.fullname" $ }}
-          passHostHeader: true
-          port: {{ include "application-chart-template.fullname" $ }}
+          port: {{ $.Values.service.port }}
       middlewares:
         {{- range $websecureMiddlewares }}
         - name: {{ include "application-chart-template.fullname" $ }}-{{ . }}

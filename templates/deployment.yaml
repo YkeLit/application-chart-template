@@ -31,11 +31,9 @@ spec:
           image: {{ include "application-chart-template.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            {{- range .Values.service }}
-            - name: {{ .name }}
-              containerPort: {{ .port }}
+            - name: {{ .Values.service.name }}
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
-            {{- end }}
           resources:
             {{- .Values.resources | toYaml | nindent 12 }}
       {{- with .Values.nodeSelector }}

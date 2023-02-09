@@ -5,8 +5,8 @@
 ########################Pod Setting########################
 
 # 使用前请修改 fullnameOverride 和 nameOverride，方便分辨与查找此应用
-nameOverride: chart-template
-fullnameOverride: application-chart-template
+nameOverride: ""
+fullnameOverride: ""
 
 # 设置 chart 的 namespace
 namespace: default
@@ -26,9 +26,9 @@ imageCredentials:
   email: dev@byzan.team
 
 service:
-  - name: http
-    type: ClusterIP
-    port: 80
+  name: http
+  type: ClusterIP
+  port: 80
 
 # 使用 Pods 资源限制请配置 resourcees。
 resources: {}
@@ -54,16 +54,22 @@ restartPolicy: Always
 nodeSelector: {}
 
 # 设置外部服务引入
-externalEndPoint: {}
+externalEndPoint: []
   # - name: ""
   #   ip: ""
   #   port: ""
 
-externalService: {}
+externalService: []
   # - name: ""
   #   port: ""
   #   targetPort: ""
 
+# traefik 代理外部服务的匹配规则
+externalIngressroute:
+  - name: ""
+    path: ""
+    middlewares: {'compress', 'stripprefix', 'cros-header'}
+    host: ""
 ########################Application Setting########################
 
 # Application 代理设置
@@ -71,8 +77,8 @@ applicationHost:
   - factory.jet.localhost
 applicationTLSSecret:
 
-# traefik 代理匹配规则
-traefik:
+# traefik 代理应用的匹配规则
+appIngressroute:
   - name: web
     path: /
     

@@ -5,6 +5,6 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-    {{- range .Values.traefik}}
-      - {{ .path }}
+    {{- range .Values.appIngressroute}}
+      - /{{ .path }}
     {{- end }}

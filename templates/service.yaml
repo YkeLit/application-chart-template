@@ -1,20 +1,18 @@
-{{- range .Values.service }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "application-chart-template.fullname" $ }}-{{ .name }}
+  name: {{ include "application-chart-template.fullname" . }}
   labels:
     {{- include "application-chart-template.labels" $ | nindent 4 }}
 spec:
-  type: {{ .type }}
+  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .port }}
-      targetPort: {{ .name }}
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.name }}
       protocol: TCP
-      name: {{ .name }}
+      name: {{ .Values.service.name }}
   selector:
     {{- include "application-chart-template.selectorLabels" $ | nindent 4 }}
-{{- end }}
 ---
 {{- if .Values.externalEndPoint | empty | not }}
 {{- range .Values.externalEndPoint }}

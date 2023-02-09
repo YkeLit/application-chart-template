@@ -1,3 +1,4 @@
+{{- if .Values.env | empty | not }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,3 +7,4 @@ metadata:
   name: {{ .Chart.Name }}-env
 data:
   {{- .Values.env | toYaml | nindent 2}}
+{{- end }}

@@ -6,5 +6,5 @@ spec:
   stripPrefix:
     prefixes:
     {{- range .Values.appIngressroute}}
-      - /{{ .path }}
+      - {{ .path }}
     {{- end }}

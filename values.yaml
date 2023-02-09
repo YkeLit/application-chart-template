@@ -65,22 +65,23 @@ externalService: []
   #   targetPort: ""
 
 # traefik 代理外部服务的匹配规则
-externalIngressroute:
-  - name: ""
-    path: ""
-    middlewares: {'compress', 'stripprefix', 'cros-header'}
-    host: ""
+externalIngressroute: []
+  # - name: ""
+  #   path: ""
+  #   middlewares: {'compress', 'stripprefix', 'cros-header'}
+  #   host: ""
+
 ########################Application Setting########################
 
 # Application 代理设置
-applicationHost: 
-  - factory.jet.localhost
+applicationHost: []
+  # - localhost
 applicationTLSSecret:
 
 # traefik 代理应用的匹配规则
-appIngressroute:
-  - name: web
-    path: /
+appIngressroute: []
+  # - name: web
+  #   path: /
     
 
 # 需要使用 initcontainers 请配置此项

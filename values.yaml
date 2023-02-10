@@ -19,11 +19,11 @@ image:
   pullPolicy: IfNotPresent
   tag: ""
 
-imageCredentials:
-  registry: registry.cn-hangzhou.aliyuncs.com
-  username: deploy-man@skylark
-  password: changeit
-  email: dev@byzan.team
+imageCredentials: {}
+  # registry: registry.cn-hangzhou.aliyuncs.com
+  # username: deploy-man@skylark
+  # password: changeit
+  # email: dev@byzan.team
 
 service:
   name: http

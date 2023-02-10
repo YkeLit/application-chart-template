@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "application-chart-template.labels" . | nindent 4 }}
-  name: {{ .Chart.Name }}-env
+  name: {{ include "application-chart-template.name" $ }}-env
 data:
   {{- .Values.env | toYaml | nindent 2}}
 {{- end }}

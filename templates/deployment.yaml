@@ -27,9 +27,11 @@ spec:
       {{- end }}
       containers:
         - name: {{ include "application-chart-template.name" $ }}
+          {{- if .Values.env | empty | not }}
           envFrom:
             - configMapRef:
                 name: {{ include "application-chart-template.name" $ }}-env
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

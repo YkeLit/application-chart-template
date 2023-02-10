@@ -3,12 +3,12 @@ entries:
   application-chart-template:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-02-10T10:37:17.663917+08:00"
+    created: "2023-02-10T10:48:20.829853+08:00"
     description: A Helm chart template for byzanteam application
-    digest: 21aabeafda4179a56cf37279f6a855085f621fe9a04679cf0ae0b4f0ac489730
+    digest: 88553e71dae2794fbe501336fd932d558b57de1a12c07c3de293a56d1a47c588
     name: application-chart-template
     type: application
     urls:
-    - https://ykelit.github.io/application-chart-template/charts/application-chart-template-1.0.5.tgz
+    - https://ykelit.github.io/application-chart-template/application-chart-template-1.0.5.tgz
     version: 1.0.5
-generated: "2023-02-10T10:37:17.659789+08:00"
+generated: "2023-02-10T10:48:20.828935+08:00"

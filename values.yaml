@@ -17,7 +17,7 @@ replicaCount: 1
 image:
   repository: nginx
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: ""
 
 imageCredentials:
   registry: registry.cn-hangzhou.aliyuncs.com

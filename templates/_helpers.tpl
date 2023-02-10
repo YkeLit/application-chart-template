@@ -43,20 +43,20 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
+Return the imagePullSecret
+*/}}
+{{- define "application-chart-template.imagePullSecret" }}
+{{- with .Values.imageCredentials }}
+{{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- end }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
-{{- define "application-chart-template.selectorLabels" -}}
+{{- define "application-chart-template.selectorLabels" }}
 app.kubernetes.io/name: {{ include "application-chart-template.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/namespace: {{ .Values.namespace}}
 {{- end }}
 
-{{/*
-Return the proper image name
-*/}}
-{{- define "application-chart-template.image" }}
-{{- $registryName := .Values.imageCredentials.registry -}}
-{{- $repositoryName := .Values.image.repository -}}
-{{- $tag := .Values.image.tag | toString -}}
-{{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
-{{- end }}

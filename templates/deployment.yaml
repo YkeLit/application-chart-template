@@ -17,8 +17,10 @@ spec:
       labels:
         {{- include "application-chart-template.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.imageCredentials | empty | not }}
       imagePullSecrets:
         - name: {{ include "application-chart-template.fullname" . }}-docker-registry-secret
+      {{- end }}
       {{- if .Values.initContainers | empty | not }}
       initContainers:
         {{- .Values.initContainers | toYaml | nindent 8 }}
@@ -28,7 +30,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ .Chart.Name }}-env
-          image: {{ include "application-chart-template.image" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: {{ .Values.service.name }}
